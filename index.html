@@ -1,36 +1,137 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Simple ChatGPT UI</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ChatGPT Simple UI</title>
+  <style>
+    body {
+      background: #1e1e2f;
+      color: #e0e0ff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      margin-bottom: 30px;
+      font-weight: 700;
+      font-size: 2.5rem;
+      color: #a0a0ff;
+      text-shadow: 0 0 8px #7272ff;
+    }
+    #question {
+      width: 100%;
+      max-width: 600px;
+      padding: 15px 20px;
+      font-size: 1.1rem;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      box-shadow: 0 0 15px #5555ff88;
+      background: #2a2a45;
+      color: #d0d0ff;
+      transition: box-shadow 0.3s ease;
+    }
+    #question:focus {
+      box-shadow: 0 0 20px #8888ffcc;
+    }
+    button {
+      margin-top: 20px;
+      padding: 14px 40px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #6f7eff, #a3a8ff);
+      color: #1a1a2e;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 5px 15px #6f7effaa;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    button:hover {
+      background: linear-gradient(135deg, #a3a8ff, #6f7eff);
+      transform: scale(1.05);
+    }
+    #response {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 600px;
+      min-height: 120px;
+      padding: 20px;
+      background: #2a2a45;
+      border-radius: 15px;
+      box-shadow: inset 0 0 15px #5555ff88;
+      font-size: 1.15rem;
+      line-height: 1.5;
+      color: #c0c0ff;
+      white-space: pre-wrap;
+      user-select: text;
+    }
+    @media (max-width: 700px) {
+      #question, #response {
+        max-width: 100%;
+      }
+      button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Chat with GPT</h1>
-  <input type="text" id="question" placeholder="Enter your question" />
+  <h1>ChatGPT Simple UI</h1>
+
+  <input
+    id="question"
+    type="text"
+    placeholder="Enter your question here..."
+    autocomplete="off"
+    autofocus
+  />
   <button onclick="sendQuestion()">Send</button>
+
   <div id="response"></div>
 
   <script>
     async function sendQuestion() {
-      const question = document.getElementById("question").value;
+      const questionInput = document.getElementById("question");
       const responseDiv = document.getElementById("response");
+      const question = questionInput.value.trim();
 
-      responseDiv.innerText = "Loading...";
+      if (!question) {
+        responseDiv.innerText = "Please enter a question.";
+        return;
+      }
+
+      responseDiv.innerText = "Thinking...";
 
       try {
         const res = await fetch("https://chatgpt-backend-u0lj.onrender.com/ask", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ question: question })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question }),
         });
 
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status}`);
+        }
+
         const data = await res.json();
-        responseDiv.innerText = data.answer || "No response.";
+        responseDiv.innerText = data.answer || "No response from API.";
       } catch (err) {
         responseDiv.innerText = "Error: " + err.message;
       }
     }
+
+    // Optionally allow pressing Enter to send
+    document.getElementById("question").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        sendQuestion();
+      }
+    });
   </script>
 </body>
 </html>
