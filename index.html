@@ -29,7 +29,7 @@
 
       responseDiv.innerText = "Loading...";
       try {
-        const res = await fetch("https://chatgpt-backend-u0lj.onrender.com", {  // Replace with your Render backend URL
+        const res = await fetch("https://chatgpt-backend-u0lj.onrender.com/ask", {  // Replace with your Render backend URL
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ question }),
