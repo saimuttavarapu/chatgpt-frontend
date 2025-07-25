@@ -1,93 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>This is SAI's GPT asshole</title>
-  <style>
-    body {
-      background: #1e1e2f;
-      color: #e0e0ff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px;
-      min-height: 100vh;
-      margin: 0;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ChatGPT Stylish UI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #4a00e0, #8e2de2);
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #f0f0ff;
+    padding: 50px 20px;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 40px;
+    font-weight: 600;
+    text-shadow: 0 4px 8px rgba(255,255,255,0.3);
+  }
+
+  #question {
+    width: 100%;
+    max-width: 650px;
+    padding: 18px 25px;
+    font-size: 1.2rem;
+    border-radius: 30px;
+    border: none;
+    outline: none;
+    box-shadow:
+      0 0 10px #9b59b6aa,
+      inset 0 0 15px #6a0dad99;
+    background: linear-gradient(145deg, #6a11cb, #2575fc);
+    color: #e9e9ff;
+    transition: box-shadow 0.3s ease;
+  }
+  #question::placeholder {
+    color: #d0c9ffcc;
+  }
+  #question:focus {
+    box-shadow:
+      0 0 15px #bb86fcee,
+      inset 0 0 20px #9f7dffcc;
+  }
+
+  button {
+    margin-top: 25px;
+    padding: 18px 50px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    border-radius: 35px;
+    border: none;
+    background: linear-gradient(45deg, #ff6ec4, #7873f5);
+    color: #fff;
+    cursor: pointer;
+    box-shadow:
+      0 8px 15px rgba(255, 110, 196, 0.6);
+    transition:
+      background 0.4s ease,
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  button:hover {
+    background: linear-gradient(45deg, #f45b9c, #6752d4);
+    transform: scale(1.08);
+    box-shadow:
+      0 10px 20px rgba(244, 91, 156, 0.85);
+  }
+  button:active {
+    transform: scale(0.95);
+    box-shadow:
+      0 4px 8px rgba(244, 91, 156, 0.6);
+  }
+
+  #response {
+    margin-top: 40px;
+    max-width: 650px;
+    width: 100%;
+    min-height: 150px;
+    padding: 30px 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    box-shadow:
+      inset 0 0 15px #6c4bff66,
+      0 0 40px #8855ffbb;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #f0eaff;
+    white-space: pre-wrap;
+    user-select: text;
+    font-weight: 500;
+    transition: background 0.3s ease;
+  }
+  #response.loading {
+    font-style: italic;
+    color: #d0c5ff;
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
     h1 {
+      font-size: 2.3rem;
       margin-bottom: 30px;
-      font-weight: 700;
-      font-size: 2.5rem;
-      color: #a0a0ff;
-      text-shadow: 0 0 8px #7272ff;
     }
-    #question {
-      width: 100%;
-      max-width: 600px;
-      padding: 15px 20px;
-      font-size: 1.1rem;
-      border-radius: 12px;
-      border: none;
-      outline: none;
-      box-shadow: 0 0 15px #5555ff88;
-      background: #2a2a45;
-      color: #d0d0ff;
-      transition: box-shadow 0.3s ease;
-    }
-    #question:focus {
-      box-shadow: 0 0 20px #8888ffcc;
+    #question, #response {
+      max-width: 100%;
+      font-size: 1rem;
     }
     button {
-      margin-top: 20px;
-      padding: 14px 40px;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 15px;
-      background: linear-gradient(135deg, #6f7eff, #a3a8ff);
-      color: #1a1a2e;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 5px 15px #6f7effaa;
-      transition: background 0.3s ease, transform 0.2s ease;
-    }
-    button:hover {
-      background: linear-gradient(135deg, #a3a8ff, #6f7eff);
-      transform: scale(1.05);
-    }
-    #response {
-      margin-top: 30px;
       width: 100%;
-      max-width: 600px;
-      min-height: 120px;
-      padding: 20px;
-      background: #2a2a45;
-      border-radius: 15px;
-      box-shadow: inset 0 0 15px #5555ff88;
-      font-size: 1.15rem;
-      line-height: 1.5;
-      color: #c0c0ff;
-      white-space: pre-wrap;
-      user-select: text;
+      padding: 16px 0;
+      font-size: 1.1rem;
     }
-    @media (max-width: 700px) {
-      #question, #response {
-        max-width: 100%;
-      }
-      button {
-        width: 100%;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <h1>ChatGPT Simple UI</h1>
-
+  <h1>What do you want my LOVE</h1>
   <input
     id="question"
     type="text"
-    placeholder="Enter your question here..."
+    placeholder="Ask me anything..."
     autocomplete="off"
     autofocus
   />
@@ -103,10 +142,12 @@
 
       if (!question) {
         responseDiv.innerText = "Please enter a question.";
+        responseDiv.classList.remove("loading");
         return;
       }
 
       responseDiv.innerText = "Thinking...";
+      responseDiv.classList.add("loading");
 
       try {
         const res = await fetch("https://chatgpt-backend-u0lj.onrender.com/ask", {
@@ -121,12 +162,13 @@
 
         const data = await res.json();
         responseDiv.innerText = data.answer || "No response from API.";
+        responseDiv.classList.remove("loading");
       } catch (err) {
         responseDiv.innerText = "Error: " + err.message;
+        responseDiv.classList.remove("loading");
       }
     }
 
-    // Optionally allow pressing Enter to send
     document.getElementById("question").addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         sendQuestion();
@@ -135,3 +177,4 @@
   </script>
 </body>
 </html>
+H
